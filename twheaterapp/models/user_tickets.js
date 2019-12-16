@@ -7,20 +7,23 @@ const userSchema = Schema({
     username: String,
     email: String,
     fullname: String,
-    roles: [{type: String, enum: ['INFORMADOR', 'TECNICO', 'ADMIN']}],
+    roles: [{ type: String, enum: ['INFORMADOR', 'TECNICO', 'ADMIN'] }],
     password: String,
-    tickets: [{ type: Schema.Types.ObjectId, ref: 'Ticket'}]
+    tickets: [{ type: Schema.Types.ObjectId, ref: 'Ticket' }]
 });
 
 const ticketSchema = Schema({
-    fecha: {type: Date, default: Date.now},
-    lugar: {type: String},
-    puesto: {type: String},
-    tipo: {type: String, enum: [
-        'OTROS', 'SISTEMA_OPERATIVO', 'INTERNET', 'FISICO'
-    ]},
-    comentario: {type: String},
-    propietario: {type: Schema.Types.ObjectId, ref: 'User'}
+    fecha: { type: Date, default: Date.now },
+    lugar: { type: String },
+    puesto: { type: String },
+    tipo: {
+        type: String,
+        enum: [
+            'OTROS', 'SISTEMA_OPERATIVO', 'INTERNET', 'FISICO'
+        ]
+    },
+    comentario: { type: String },
+    propietario: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
 
