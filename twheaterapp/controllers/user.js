@@ -1,34 +1,31 @@
 'use strict'
 
-const UserService = require('../services/user')
 const bcrypt    = require('bcryptjs');
 const passport  = require('passport');
 const jwt       = require('jsonwebtoken');
 const error_types = require('./error_types');
 
-const User = require('../models/user_tickets');
+const User = require('../models/user');
 
 let controller = {
     
     register: (req, res, next) => {
-        /* let resultado = UserService.findUser({username : req.username}); */
         User.find({username: req.body.username}, (err, result) => {
             if (result.length > 0) {
-                next(new error_types.InfoError("user already exists"));
+                next(new error_types.InfoError("Este usuario ya existe en nuestra base de datos"));
             } else {
                 let hash = bcrypt.hashSync(req.body.password, parseInt(process.env.BCRYPT_ROUNDS));
                 let user = new User({
+                    fullname: req.body.fullname,
                     username: req.body.username,
                     email: req.body.email,
-                    fullname: req.body.fullname,
-                    roles: ['INFORMADOR'],
-                    password: hash,
-                    tickets: req.ticket.id
+                    rol: ['USER'],
+                    password: hash
                 });
 
                 user.save((err, user) => {
                     if(err) next(new error_types.Error400(err.message));
-                    res.status(201).json(user);
+                    res.status(201).json(user.id, user.fullname, user.username, user.email);
                 });
             }
 

@@ -14,3 +14,5 @@ const userSchema = Schema({
     rol: { type: String, enum: ['USER', 'MANAGER', 'ADMIN'] }
 
 });
+
+module.exports = mongoose.model('User', userSchema);
