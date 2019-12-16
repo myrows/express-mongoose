@@ -28,15 +28,12 @@ let controller = {
                     res.status(201).json(user._id, user.fullname, user.username, user.email);
                 });
             }
-
         })
-
-    }
-    ,
+    },
     login: (req, res, next) => {
         passport.authenticate("local", {session: false}, (error, user) => {
             if (error || !user) {
-                next(new error_types.Error404("username or password not correct."))
+                next(new error_types.Error404("El nombre de usuario/email o la contraseña no son correctos."))
             } else {
                 const payload = {
                     sub: user.id,
@@ -48,13 +45,9 @@ let controller = {
                     username: user.username,
                     token: token 
                 });
-
             }
-
         })(req, res)
     }
-
-
 }
 
 module.exports = controller;

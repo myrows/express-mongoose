@@ -30,7 +30,7 @@ db.once('open', () => {
 });
 
 
-// Busca el usuario que quiere hacer el signin, comprueba su email o username y luego compara password
+// Busca el usuario que quiere hacer el login, comprueba su email o username y luego compara password
 passport.use(new LocalStrategy((username, password, done) => {
     let busqueda = (username.includes('@')) ? { email: username } : { username: username };
     User.findOne(busqueda, (err, user) => {
@@ -40,12 +40,6 @@ passport.use(new LocalStrategy((username, password, done) => {
         }
         return done(null, user);
     });
-    /* let data = UserService.findUser(busqueda); */
-/*     if (data === undefined) return done(null, false);
-    else if (!bcrypt.compareSync(password, data.password)) {
-        return done(null, false);
-    }
-    return done(null, data);  */
 }));
 
 let opts = {}
