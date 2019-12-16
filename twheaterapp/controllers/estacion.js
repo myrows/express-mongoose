@@ -9,19 +9,19 @@ const _ = require('lodash');
 module.exports = {
 
     createEstacion: (req, res) => {
-        
-        let ticket = new Ticket({
-            lugar: req.body.lugar,
-            puesto: req.body.puesto,
-            tipo: req.body.tipo,
-            comentario: req.body.comentario,
-            propietario: req.user.id
+
+        let estacion = new Estacion({
+            name: req.body.name,
+            location: req.body.location,
+            user_register: req.user._id,
+            user_mant: req.user._id
         });
 
-        ticket.save((err, ticket) => {
-            if(err) res.send(500, err.message);
-            res.status(201).json(ticket);
-        })
+        estacion.save()
+        .then(e => e.populate('user_register').execPopulate())
+        .then(e => e.populate('user_mant').execPopulate())
+        .then(e => res.status(201).json(e))
+        .catch(error => res.send(500).json(error.message));
 
     },
     getTodos: (req, res) => {

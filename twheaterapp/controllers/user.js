@@ -25,7 +25,7 @@ let controller = {
 
                 user.save((err, user) => {
                     if(err) next(new error_types.Error400(err.message));
-                    res.status(201).json(user.id, user.fullname, user.username, user.email);
+                    res.status(201).json(user._id, user.fullname, user.username, user.email);
                 });
             }
 
