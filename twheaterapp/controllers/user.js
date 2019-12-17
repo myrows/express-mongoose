@@ -48,7 +48,7 @@ let controller = {
             }
         })(req, res)
     },
-    getUsuarios: (req, res) => {
+    getUsuarios: async (req, res) => {
 
         try{
 
