@@ -13,8 +13,8 @@ module.exports = {
         let estacion = new Estacion({
             name: req.body.name,
             location: req.body.location,
-            user_register: req.user._id,
-            user_mant: req.user._id
+            user_register: req.body.user_register,
+            user_mant: req.body.user_mant
         });
 
         estacion.save()
