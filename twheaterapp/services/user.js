@@ -61,10 +61,6 @@ let service = {
     findByRol: (rol) => {
         return _.filter(users, u => _.includes(u.roles, rol));
     },
-    randomRepairman: function() {
-        const repairmans = this.findByRol("TECNICO");        
-        return repairmans[_.random(0,repairmans.length-1)];
-    },
     insertUser : (user) => {
         return users.push({
             id: users.length,
