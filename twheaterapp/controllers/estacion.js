@@ -38,13 +38,28 @@ module.exports = {
             res.send(500, error.message);
         }
     },
+    getById: (req,res) => {
+        
 
+        try{
+
+            let result = null;
+
+            if(_.indexOf(req.user.rol, 'MANAGER') >= 0)
+                result = await Estacion.findById({_id: req.params.id},function(err,doc){
+                    if (err) throw err;
+                });
+            
+            res.status(200).json(result);
+        }catch(error){
+            res.send(500, error.message);
+        }
+    },
     delStation: (req, res) => {
         Estacion.findByIdAndDelete(req._id)
             .then(e => res.status(204))
             .catch(error => res.send(500).json(error.message));
 
     }
-
 
 }
