@@ -1,16 +1,16 @@
 'use strict'
 
-const bcrypt    = require('bcryptjs');
-const passport  = require('passport');
-const jwt       = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
 const error_types = require('./error_types');
 
 const User = require('../models/user');
 
 let controller = {
-    
+
     register: (req, res, next) => {
-        User.find({username: req.body.username}, (err, result) => {
+        User.find({ username: req.body.username }, (err, result) => {
             if (result.length > 0) {
                 next(new error_types.InfoError("Este usuario ya existe en nuestra base de datos"));
             } else {
@@ -24,14 +24,14 @@ let controller = {
                 });
 
                 user.save((err, user) => {
-                    if(err) next(new error_types.Error400(err.message));
+                    if (err) next(new error_types.Error400(err.message));
                     res.status(201).json(user._id, user.fullname, user.username, user.email);
                 });
             }
         })
     },
     login: (req, res, next) => {
-        passport.authenticate("local", {session: false}, (error, user) => {
+        passport.authenticate("local", { session: false }, (error, user) => {
             if (error || !user) {
                 next(new error_types.Error404("El nombre de usuario/email o la contraseña no son correctos."))
             } else {
@@ -40,25 +40,25 @@ let controller = {
                     exp: Date.now() + parseInt(process.env.JWT_LIFETIME),
                     username: user.username
                 };
-                const token = jwt.sign(JSON.stringify(payload), process.env.JWT_SECRET, {algorithm: process.env.JWT_ALGORITHM});
-                res.json({ 
+                const token = jwt.sign(JSON.stringify(payload), process.env.JWT_SECRET, { algorithm: process.env.JWT_ALGORITHM });
+                res.json({
                     username: user.username,
-                    token: token 
+                    token: token
                 });
             }
         })(req, res)
     },
     getUsuarios: async (req, res) => {
 
-        try{
+        try {
 
             let result = null;
 
-            if(_.indexOf(req.user.rol, 'MANAGER') >= 0)
-                result = await User.find().populate('estacion','estacion_register', 'estacion_mant').exec();
-            
+            if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
+                result = await User.find().populate('estacion', 'estacion_register', 'estacion_mant').exec();
+
             res.status(200).json(result);
-        }catch(error){
+        } catch (error) {
             res.send(500, error.message);
         }
     }

@@ -18,26 +18,48 @@ module.exports = {
         });
 
         estacion.save()
-        .then(e => e.populate('user_register').execPopulate())
-        .then(e => e.populate('user_mant').execPopulate())
-        .then(e => res.status(201).json(e))
-        .catch(error => res.send(500).json(error.message));
+            .then(e => e.populate('user_register').execPopulate())
+            .then(e => e.populate('user_mant').execPopulate())
+            .then(e => res.status(201).json(e))
+            .catch(error => res.send(500).json(error.message));
 
     },
     getTodos: async (req, res) => {
+
+        try {
+
+            let result = null;
+
+            if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
+                result = await Estacion.find().populate('user', 'user_register', 'user_mant').exec();
+
+            res.status(200).json(result);
+        } catch (error) {
+            res.send(500, error.message);
+        }
+    },
+    getById: (req,res) => {
+        
 
         try{
 
             let result = null;
 
             if(_.indexOf(req.user.rol, 'MANAGER') >= 0)
-                result = await Estacion.find().populate('user', 'user_register', 'user_mant').exec();
+                result = await Estacion.findById({_id: req.params.id},function(err,doc){
+                    if (err) throw err;
+                });
             
             res.status(200).json(result);
         }catch(error){
             res.send(500, error.message);
         }
-    }
+    },
+    delStation: (req, res) => {
+        Estacion.findByIdAndDelete(req._id)
+            .then(e => res.status(204))
+            .catch(error => res.send(500).json(error.message));
 
+    }
 
 }
