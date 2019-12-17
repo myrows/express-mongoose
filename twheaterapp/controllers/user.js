@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const error_types = require('./error_types');
+const _ = require('lodash');
 
 const User = require('../models/user');
 
@@ -19,13 +20,18 @@ let controller = {
                     fullname: req.body.fullname,
                     username: req.body.username,
                     email: req.body.email,
-                    rol: ['USER'],
+                    rol: req.body.rol,
                     password: hash
                 });
 
                 user.save((err, user) => {
                     if (err) next(new error_types.Error400(err.message));
-                    res.status(201).json(user._id, user.fullname, user.username, user.email);
+                    res.status(201).json({
+                        id: user._id,
+                        fullname: user.fullname,
+                        username: user.username,
+                        email: user.email
+                    });
                 });
             }
         })

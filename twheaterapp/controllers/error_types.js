@@ -4,6 +4,13 @@
 //podríamos haber usado sintáxis class de es6
 
 const error_types = {
+    Error400: function(msg){ //bad request
+        let err = Error.apply(this, [msg]);
+        this.name = err.name = "Error400";
+        this.message = err.message;
+        this.stack = err.stack;
+        return this;
+    },
     Error401: function(msg){ //no autorizado
         let err = Error.apply(this, [msg]);
         this.name = err.name = "Error401";
