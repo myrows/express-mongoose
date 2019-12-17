@@ -57,7 +57,8 @@ module.exports = {
     },
     putStation: (req, res) => {
         if(_.indexOf(req.user.rol, 'MANAGER')>= 0)
-        Estacion.findByIdAndUpdate(req.params.id, { $addToSet : {name: req.body.name, location: req.body.location}}, {new: true}, (error, estacion) => {
+        var query = {_id: req.params.id};
+        Estacion.findByIdAndUpdate(query, { $addToSet : {name: req.body.name, location: req.body.location}}, {new: true}, (error, estacion) => {
             if(error) next(new error_types.Error500(error.message));
             if(estacion == null)
                 next(new error_types.Error404('No se ha encontrado ninguna estación con ese id'))
