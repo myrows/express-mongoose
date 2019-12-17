@@ -38,7 +38,7 @@ module.exports = {
             res.send(500, error.message);
         }
     },
-    getById: (req,res) => {
+    getById: async (req,res) => {
         
 
         try{
