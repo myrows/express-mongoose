@@ -12,7 +12,8 @@ const bcrypt = require('bcryptjs');
 const user_routes = require('./routes/users');
 const estacion_routes = require('./routes/estacion');
 const medicion_routes = require('./routes/medicion')
-const middleware = require('./middleware/index'); 
+const middleware = require('./middleware/index');
+const User = require('./models/user');
 require('dotenv').config();
 
 /* ##### MONGO ##### */
@@ -20,6 +21,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGODB_CONNECT_URI, {useNewUrlParser: true});
+mongoose.set('useFindAndModify', false);
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
@@ -29,6 +31,8 @@ db.once('open', () => {
 
 passport.use(new LocalStrategy((username, password, done) => {
     let busqueda = (username.includes('@')) ? { email: username } : { username: username };
+    console.log(busqueda);
+    
     User.findOne(busqueda, (err, user) => {
         if(err) return done(null, false);
         if(!bcrypt.compareSync(password, user.password)) {

@@ -42,7 +42,7 @@ let controller = {
                 next(new error_types.Error404("El nombre de usuario/email o la contraseña no son correctos."))
             } else {
                 const payload = {
-                    sub: user.id,
+                    sub: user._id,
                     exp: Date.now() + parseInt(process.env.JWT_LIFETIME),
                     username: user.username
                 };
