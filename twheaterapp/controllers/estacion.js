@@ -55,6 +55,24 @@ module.exports = {
             res.send(500, error.message);
         }
     },
+    putStation: (req, res) => {
+        if(_.indexOf(req.user.rol, 'MANAGER')>= 0)
+        Estacion.findByIdAndUpdate(req.params.id, { $addToSet : {name: req.body.name, location: req.body.location}}, {new: true}, (error, estacion) => {
+            if(error) next(new error_types.Error500(error.message));
+            if(estacion == null)
+                next(new error_types.Error404('No se ha encontrado ninguna estación con ese id'))
+                else
+                    res.status(200).json({
+                        name: req.body.name,
+                        location: req.body.location,
+                        user_register: req.user.email,
+                        user_register: req.user.fullname,
+                        user_mant: req.user.email,
+                        user_mant: req.user.fullname,
+                    });
+        });
+
+    },
     delStation: (req, res) => {
         Estacion.findByIdAndDelete(req._id)
             .then(e => res.status(204))
