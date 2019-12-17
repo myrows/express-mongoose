@@ -24,7 +24,7 @@ module.exports = {
             .catch(error => res.send(500).json(error.message));
 
     },
-    getTodos: (req, res) => {
+    getTodos: async (req, res) => {
 
         try {
 
@@ -38,7 +38,7 @@ module.exports = {
             res.send(500, error.message);
         }
     },
-    getById: (req,res) => {
+    getById: async (req,res) => {
         
 
         try{
