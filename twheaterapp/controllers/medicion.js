@@ -21,7 +21,7 @@ module.exports = {
             humedad: req.body.humedad,
             calidad_aire: req.body.c_aire,
             presion: req.body.presion,
-            estacion_meteorologica: req.estacion._id,
+            estacion_meteorologica: req.estacion.estacion_meteorologica,
             fecha_hora:Date.now()
 
         });
