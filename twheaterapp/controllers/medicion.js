@@ -11,8 +11,6 @@ module.exports = {
     nuevaMedicion: (req, res) => {
 
         let medicion = new Medicion({
-            user_register: req.user._id,
-            user_mant: req.user._id,
 
             lluvia:  req.body.lluvia,
             velocidad_viento: req.body.v_viento,
@@ -22,16 +20,13 @@ module.exports = {
             humedad: req.body.humedad,
             calidad_aire: req.body.c_aire,
             presion: req.body.presion,
-            estacion_meteorologica:{ 
-                type: Schema.ObjectId,
-                ref: "Estacion"
-            },
-            fecha_hora:Date
+            estacion_meteorologica: req.estacion._id,
+            fecha_hora:Date.now()
+
         });
 
         medicion.save()
-        .then(e => e.populate('user_register').execPopulate())
-        .then(e => e.populate('user_mant').execPopulate())
+        .then(e => e.populate('estacion_meteorologica').execPopulate())
         .then(e => res.status(201).json(e))
         .catch(error => res.send(500).json(error.message));
 
