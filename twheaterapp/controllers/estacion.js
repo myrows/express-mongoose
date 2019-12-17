@@ -8,7 +8,7 @@ const _ = require('lodash');
 
 module.exports = {
 
-    createEstacion: (req, res) => {
+    createStation: (req, res) => {
 
         let estacion = new Estacion({
             name: req.body.name,
@@ -24,7 +24,7 @@ module.exports = {
             .catch(error => res.send(500).json(error.message));
 
     },
-    getTodos: async (req, res) => {
+    getAll: async (req, res) => {
 
         try {
 
