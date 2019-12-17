@@ -47,7 +47,23 @@ let controller = {
                 });
             }
         })(req, res)
+    },
+    getUsuarios: (req, res) => {
+
+        try{
+
+            let result = null;
+
+            if(_.indexOf(req.user.rol, 'MANAGER') >= 0)
+                result = await User.find().populate('estacion','estacion_register', 'estacion_mant').exec();
+            
+            res.status(200).json(result);
+        }catch(error){
+            res.send(500, error.message);
+        }
     }
+
+
 }
 
 module.exports = controller;
