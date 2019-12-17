@@ -11,7 +11,7 @@ let middlewares = {
 
             if (err) { return next(err); }
 
-            if (!user) { return next(new error_types.Error403("You are not allowed to access.")); }
+            if (!user) { return next(new error_types.Error403("El acceso no esta permitido")); }
 
             req.user = user;
             next();
@@ -36,7 +36,7 @@ let middlewares = {
     },
 
     notFoundHandler: (req, res, next) => {
-        res.status(404).json({ error: "endpoint not found" });
+        res.status(404).json({ error: "Endpoint no encontrado" });
     },
 
     isAuthoriceFor: (role, levelAuth, req, res, next) => {
@@ -46,16 +46,16 @@ let middlewares = {
 
             if (err) { return next(err); }
 
-            if (!user) { return next(new error_types.Error403("You are not allowed to access.")); }
+            if (!user) { return next(new error_types.Error403("El acceso no esta permitido")); }
 
             if (role != null) {
 
                 if (role === 'USER' && levelAuth > 0) {
-
+                    return next(new error_types.Error403("Acceso no permitido"));
                 }
 
                 if (role === 'MANAGER' && levelAuth > 1) {
-
+                    return next(new error_types.Error403("Acceso no permitido"));
                 }
 
 
