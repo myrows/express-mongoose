@@ -7,6 +7,7 @@ const middleware = require('../middleware/index');
 const MedicionController = require('../controllers/medicion')
 
 router.post('/', MedicionController.nuevaMedicion);
+router.get('/today', MedicionController.getAllWeatherToday);
 
 
 module.exports = router
