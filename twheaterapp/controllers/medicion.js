@@ -13,7 +13,7 @@ module.exports = {
 
         let medicion = new Medicion({
 
-            lluvia:  req.body.lluvia,
+            lluvia: req.body.lluvia,
             velocidad_viento: req.body.v_viento,
             direccion_viento: req.body.d_viento,
             temperatura_ambiente: req.body.temp_ambiente,
@@ -22,14 +22,14 @@ module.exports = {
             calidad_aire: req.body.c_aire,
             presion: req.body.presion,
             estacion_meteorologica: req.body.estacion_meteorologica,
-            fecha_hora:Date.now()
+            fecha_hora: Date.now()
 
         });
 
         medicion.save()
-        .then(e => e.populate('estacion_meteorologica').execPopulate())
-        .then(e => res.status(201).json(e))
-        .catch(error => res.send(500).json(error.message));
+            .then(e => e.populate('estacion_meteorologica').execPopulate())
+            .then(e => res.status(201).json(e))
+            .catch(error => res.send(500).json(error.message));
 
     },
     getAllWeatherToday: (req, res) => {
@@ -40,12 +40,12 @@ module.exports = {
 /*             let start = new Date(now.getFullYear(),now.getMonth(),now.getDate(),1,0,0);
             let end = new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,59,59); */
 
-            if(_.indexOf(req.user.rol == 'USER') >= 0){
+            if(_.indexOf(req.user.rol == 'USER') >= 0)
                 Medicion.find({fecha_hora: {$gte: start, '$lte': end}})
                 .sort({fecha_hora: 1})
                 .populate('estacion_meteorologica')
-                .exec(function(err, medicion){
-                    if(err) res.send(500, err.message);
+                .exec(function (err, medicion) {
+                    if (err) res.send(500, err.message);
                     res.status(200).json({
                         estacion_meteorologica: medicion.estacion_meteorologica.name,
                         location: medicion.estacion_meteorologica.location,
@@ -62,7 +62,7 @@ module.exports = {
                         fecha_hora: medicion.fecha_hora
                     });
                 });
-            }else{
+            else{
                 return next(new error_types.Error403('No tienes rol USER'))
             }
 
