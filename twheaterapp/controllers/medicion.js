@@ -33,15 +33,15 @@ module.exports = {
 
     },
     getAllWeatherToday: (req, res) => {
-
-            const moment = require('moment')
+            var moment = require('moment');
+            moment().format();
             const start = moment().startOf('day');
             const end = moment().endOf('day');
-            /* let start = new Date(now.getFullYear(),now.getMonth(),now.getDate(),1,0,0);
+/*             let start = new Date(now.getFullYear(),now.getMonth(),now.getDate(),1,0,0);
             let end = new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,59,59); */
 
-            if(_.indexOf(req.user.rol == 'USER') >= 0)
-                Medicion.find({fecha_hora: {'$gte': start, '$lte': end}})
+            if(_.indexOf(req.user.rol == 'USER') >= 0){
+                Medicion.find({fecha_hora: {$gte: start, '$lte': end}})
                 .sort({fecha_hora: 1})
                 .populate('estacion_meteorologica')
                 .exec(function(err, medicion){
@@ -62,7 +62,7 @@ module.exports = {
                         fecha_hora: medicion.fecha_hora
                     });
                 });
-            else{
+            }else{
                 return next(new error_types.Error403('No tienes rol USER'))
             }
 
