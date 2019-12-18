@@ -25,7 +25,7 @@ module.exports = {
             .catch(error => res.send(500).json(error.message));
 
     },
-    getAll: async (req, res) => {
+    getAll: async(req, res) => {
 
         try {
 
@@ -39,7 +39,7 @@ module.exports = {
             res.send(500, error.message);
         }
     },
-    getById: async (req, res) => {
+    getById: async(req, res) => {
 
 
         try {
@@ -47,7 +47,7 @@ module.exports = {
             let result = null;
 
             if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
-                result = await Estacion.findById({ _id: req.params.id }, function (err, doc) {
+                result = await Estacion.findById({ _id: req.params.id }, function(err, doc) {
                     if (err) throw err;
                 });
 
@@ -76,7 +76,7 @@ module.exports = {
 
     },
     delStation: (req, res) => {
-        Estacion.findByIdAndDelete(req._id)
+        Estacion.findByIdAndDelete(req.params.id)
             .then(e => res.status(204))
             .catch(error => res.send(500).json(error.message));
 
@@ -84,9 +84,9 @@ module.exports = {
 
     getWeatherOfStation: (req, res) => {
         Medicion
-            .find({ estacion_meteorologica: req._id })
+            .find({ estacion_meteorologica: req.params.id })
             .populate('estacion_meteorologica')
-            .exec(function (error, medicion) {
+            .exec(function(err, medicion) {
                 if (err) res.send(500, err.message);
                 res.status(200).json({
                     name: medicion.estacion_meteorologica.name,
