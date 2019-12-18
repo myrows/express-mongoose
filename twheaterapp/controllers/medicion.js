@@ -4,6 +4,7 @@ const error_types = require('./error_types');
 
 const Medicion = require('../models/medicion');
 const _ = require('lodash');
+var moment = require('moment');
 
 
 
@@ -33,21 +34,19 @@ module.exports = {
 
     },
     getAllWeatherToday: (req, res) => {
-            var moment = require('moment');
-            moment().format();
-            const start = moment().startOf('day');
-            const end = moment().endOf('day');
-/*             let start = new Date(now.getFullYear(),now.getMonth(),now.getDate(),1,0,0);
-            let end = new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,59,59); */
 
-            if(_.indexOf(req.user.rol == 'USER') >= 0)
-                Medicion.find({fecha_hora: {$gte: start, '$lte': end}})
+            const start = moment().startOf('day').format();
+            const end = moment().endOf('day').format();
+
+                Medicion.find({fecha_hora: {$gte: start, $lte: end}})
                 .sort({fecha_hora: 1})
-                .populate('estacion_meteorologica')
+                .populate('estacion_meteorologica', 'name')
                 .exec(function (err, medicion) {
                     if (err) res.send(500, err.message);
                     res.status(200).json({
-                        estacion_meteorologica: medicion.estacion_meteorologica.name,
+
+                        medicion: medicion,
+/*                      estacion_meteorologica: medicion.estacion_meteorologica.name,
                         location: medicion.estacion_meteorologica.location,
                         user_register: medicion.estacion_meteorologica.user_register,
                         user_mant: medicion.estacion_meteorologica.user_mant,
@@ -59,12 +58,9 @@ module.exports = {
                         humedad: medicion.humedad,
                         calidad_aire: medicion.calidad_aire,
                         presion: medicion.presion,
-                        fecha_hora: medicion.fecha_hora
+                        fecha_hora: medicion.fecha_hora */
                     });
                 });
-            else{
-                return next(new error_types.Error403('No tienes rol USER'))
-            }
 
 
 

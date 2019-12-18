@@ -41,20 +41,32 @@ module.exports = {
     },
     getById: async(req, res) => {
 
+        let result = null;
 
-        try {
 
-            let result = null;
+        if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
+            result = await Estacion.findById({ _id: req.params.id }, function(err, doc) {
+                if (err) throw err;
+            });
 
-            if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
-                result = await Estacion.findById({ _id: req.params.id }, function(err, doc) {
-                    if (err) throw err;
+
+        Estacion.findById({ _id: req.params.id })
+            .populate('user_register', 'user_mant')
+            .exec(function(err, estacion) {
+                if (err) res.send(500, err.message);
+                res.status(200).json({
+                    name: estacion.name,
+                    location: estacion.location,
+                    user_register: estacion.user_register,
+                    user_mant: estacion.user_mant
                 });
 
-            res.status(200).json(result);
-        } catch (error) {
-            res.send(500, error.message);
-        }
+
+
+            });
+
+
+
     },
     putStation: (req, res) => {
         if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
