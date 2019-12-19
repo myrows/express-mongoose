@@ -8,9 +8,17 @@ const _ = require('lodash');
 
 const User = require('../models/user');
 
+const USER_LEVEL = 0;
+const MANAGER_LEVEL = 1;
+const ADMIN_LEVEL = 2;
+
+
 let controller = {
 
     register: (req, res, next) => {
+
+        let auth_level = USER_LEVEL
+
         User.find({ username: req.body.username }, (err, result) => {
             if (result.length > 0) {
                 next(new error_types.InfoError("Este usuario ya existe en nuestra base de datos"));
@@ -37,6 +45,7 @@ let controller = {
         })
     },
     login: (req, res, next) => {
+        let auth_level = USER_LEVEL
         passport.authenticate("local", { session: false }, (error, user) => {
             if (error || !user) {
                 next(new error_types.Error404("El nombre de usuario/email o la contraseña no son correctos."))
@@ -55,7 +64,7 @@ let controller = {
         })(req, res)
     },
     getUsuarios: async(req, res) => {
-
+        let auth_level = ADMIN_LEVEL;
         try {
 
             let result = null;

@@ -5,6 +5,10 @@ const error_types = require('./error_types');
 const Estacion = require('../models/estacion_meteorologica');
 const Medicion = require('../models/medicion');
 const _ = require('lodash');
+const USER_LEVEL = 0;
+const MANAGER_LEVEL = 1;
+const ADMIN_LEVEL = 2;
+
 
 
 module.exports = {
