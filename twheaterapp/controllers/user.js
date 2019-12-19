@@ -17,7 +17,7 @@ let controller = {
 
     register: (req, res, next) => {
 
-        let auth_level = USER_LEVEL
+
 
         User.find({ username: req.body.username }, (err, result) => {
             if (result.length > 0) {
