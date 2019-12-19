@@ -11,17 +11,7 @@ const mongoose = require('mongoose');
 
 
 
-function insertWeather(docs) {
-    Medicion.collection.insert(docs);
-}
 
-function insertStation(docs) {
-    Estacion.collection.insert(docs);
-}
-
-function insertUser() {
-    User.collection.insert(docs);
-}
 
 
 
@@ -43,17 +33,41 @@ module.exports = {
         }]
 
         var users = [{
-            "_id": new ObjectId("56955ca46063c5600627f393"),
-            "fullname": "Elfattiga",
-            "username": "User",
-            "password": "User",
-            "email": "User",
-            "estacion_register": null,
-            "estacion_mant": "ADMIN"
-        }]
+                "_id": new ObjectId("56955ca46063c5600627f393"),
+                "fullname": "user",
+                "username": "user",
+                "password": "user",
+                "email": "user",
+                "estacion_register": null,
+                "estacion_mant": null,
+                "rol": "USER"
+            },
+            {
+                "_id": new ObjectId("56955ca46063c5600627f394"),
+                "fullname": "manager",
+                "username": "manager",
+                "password": "manager",
+                "email": "manager",
+                "estacion_register": null,
+                "estacion_mant": null,
+                "rol": "MANAGER"
+            },
+            {
+                "_id": new ObjectId("56955ca46063c5600627f395"),
+                "fullname": "admin",
+                "username": "admin",
+                "password": "admin",
+                "email": "admin",
+                "estacion_register": null,
+                "estacion_mant": null,
+                "rol": "ADMIN"
+            }
+        ]
 
 
         await User.collection.insertMany(users);
+        await Estacion.collection.insert(stations);
+        await Medicion.collection.insert(weathers);
 
         res.send(201, "Base de datos creada");
 
