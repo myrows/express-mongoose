@@ -4,6 +4,7 @@ const error_types = require('./error_types');
 
 const Estacion = require('../models/estacion_meteorologica');
 const Medicion = require('../models/medicion');
+const User = require('../models/user');
 const _ = require('lodash');
 var moment = require('moment');
 const USER_LEVEL = 0;
@@ -21,7 +22,7 @@ module.exports = {
             let estacion = new Estacion({
                 name: req.body.name,
                 location: req.body.location,
-                user_register: req.body.user_register,
+                user_register: req.user._id,
                 user_mant: req.body.user_mant
             });
 
@@ -30,6 +31,9 @@ module.exports = {
                 .then(e => e.populate('user_mant').execPopulate())
                 .then(e => res.status(201).json(e))
                 .catch(error => res.send(500).json(error.message));
+            
+            req.user.estacion_register.push(estacion._id);
+            
         }
     },
     getAll: async(req, res) => {
