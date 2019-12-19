@@ -44,8 +44,6 @@ module.exports = {
     getById: async(req, res) => {
 
         let result = null;
-
-
         //if (_.indexOf(req.user.rol, 'MANAGER') >= 0){          
 
         const _id = req.params._id;
@@ -90,7 +88,7 @@ module.exports = {
 
     },
     delStation: (req, res) => {
-        Estacion.findByIdAndDelete(req.params.id)
+        Estacion.findByIdAndDelete(req.params._id)
             .then(e => res.status(204))
             .catch(error => res.send(500).json(error.message));
 

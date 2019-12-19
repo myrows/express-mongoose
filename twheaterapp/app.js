@@ -65,7 +65,7 @@ app.use(passport.initialize())
 app.use('/api/', user_routes);
 app.use('/api/stations/', estacion_routes);
 app.use('/api/weather/', medicion_routes);
-app.use(middleware.isAuthoriceFor);
+//app.use(middleware.isAuthoriceFor);
 app.use(middleware.errorHandler);
 app.use(middleware.notFoundHandler);
 
