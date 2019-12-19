@@ -8,6 +8,7 @@ const MedicionController = require('../controllers/medicion')
 
 router.post('/', MedicionController.nuevaMedicion);
 router.get('/today', MedicionController.getAllWeatherToday);
+router.get('/from/:from/to/:to',MedicionController.getMedicionesEntreFechas);
 router.get('/:id', MedicionController.getById);
 
 

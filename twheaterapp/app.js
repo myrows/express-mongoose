@@ -20,7 +20,7 @@ require('dotenv').config();
 
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_CONNECT_URI, {useNewUrlParser: true});
+mongoose.connect(process.env.MONGODB_CONNECT_URI, { useNewUrlParser: true });
 mongoose.set('useFindAndModify', false);
 
 let db = mongoose.connection;
@@ -32,10 +32,10 @@ db.once('open', () => {
 passport.use(new LocalStrategy((username, password, done) => {
     let busqueda = (username.includes('@')) ? { email: username } : { username: username };
     console.log(busqueda);
-    
+
     User.findOne(busqueda, (err, user) => {
-        if(err) return done(null, false);
-        if(!bcrypt.compareSync(password, user.password)) {
+        if (err) return done(null, false);
+        if (!bcrypt.compareSync(password, user.password)) {
             return done(null, false);
         }
         return done(null, user);
@@ -50,7 +50,7 @@ opts.algorithms = [process.env.JWT_ALGORITHM];
 // Encuentra un usuario por id con la información del token
 passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
     User.findById(jwt_payload.sub, (err, user) => {
-        if(err) return done(null, false);
+        if (err) return done(null, false);
         else return done(null, user);
     });
 }));
@@ -64,7 +64,8 @@ app.use(passport.initialize())
 
 app.use('/api/', user_routes);
 app.use('/api/stations/', estacion_routes);
-app.use('/api/weather/',medicion_routes);
+app.use('/api/weather/', medicion_routes);
+//app.use(middleware.isAuthoriceFor);
 app.use(middleware.errorHandler);
 app.use(middleware.notFoundHandler);
 
