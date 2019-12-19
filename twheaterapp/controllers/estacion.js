@@ -72,22 +72,18 @@ module.exports = {
 
     },
     putStation: (req, res) => {
-        if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
-            var query = { _id: req.params.id };
-        Estacion.findByIdAndUpdate(query, { $addToSet: { name: req.body.name, location: req.body.location } }, { new: true }, (error, estacion) => {
-            if (error) next(new error_types.Error500(error.message));
-            if (estacion == null)
-                next(new error_types.Error404('No se ha encontrado ninguna estación con ese id'))
-            else
-                res.status(200).json({
-                    name: req.body.name,
-                    location: req.body.location,
-                    user_register: req.user.email,
-                    user_register: req.user.fullname,
-                    user_mant: req.user.email,
-                    user_mant: req.user.fullname,
-                });
-        });
+        /*             if ((req.user.rol, 'MANAGER')) */
+        const _id = req.params.id;
+        Estacion.replaceOne({ _id }, { name: req.body.name, location: req.body.location })
+            .populate({ path: 'user_register', select: ['username', 'email'] })
+            .populate({ path: 'user_mant', select: ['username', 'email'] })
+            .exec(function(err, estacion) {
+                if (err) res.send(500, err.message);
+                res.status(201).json({
+                    estacion: estacion
+                })
+
+            })
 
     },
     delStation: (req, res) => {
@@ -138,7 +134,8 @@ module.exports = {
         const start = moment(from).format();
         const end = moment(to).format();
         Medicion.find({ estacion_meteorologica: _id, fecha_hora: { $gte: start, $lte: end } })
-            .populate('estacion_meteorologica')
+            .populate({ path: 'estacion_meteorologica', populate: { path: 'user_register', select: ['username', 'email'] } })
+            .populate({ path: 'estacion_meteorologica', populate: { path: 'user_mant', select: ['username', 'email'] } })
             .exec(function(err, medicion) {
                 if (err) res.send(500, err.message);
                 res.status(200).json({
