@@ -35,36 +35,43 @@ module.exports = {
     },
     getAllWeatherToday: (req, res) => {
 
-            const start = moment().startOf('day').format();
-            const end = moment().endOf('day').format();
+        const start = moment().startOf('day').format();
+        const end = moment().endOf('day').format();
 
-                Medicion.find({fecha_hora: {$gte: start, $lte: end}})
-                .sort({fecha_hora: 1})
-                .populate('estacion_meteorologica', 'name')
-                .exec(function (err, medicion) {
-                    if (err) res.send(500, err.message);
-                    res.status(200).json({
+        Medicion.find({fecha_hora: {$gte: start, $lte: end}})
+        .sort({fecha_hora: 1})
+        .populate('estacion_meteorologica', 'name')
+        .exec(function (err, medicion) {
+            if (err) res.send(500, err.message);
+            res.status(200).json({
 
-                        medicion: medicion,
-/*                      estacion_meteorologica: medicion.estacion_meteorologica.name,
-                        location: medicion.estacion_meteorologica.location,
-                        user_register: medicion.estacion_meteorologica.user_register,
-                        user_mant: medicion.estacion_meteorologica.user_mant,
-                        lluvia: medicion.lluvia,
-                        velocidad_viento: medicion.velocidad_viento,
-                        direccion_viento: medicion.direccion_viento,
-                        temperatura_ambiente: medicion.temperatura_ambiente,
-                        temperatura_suelo: medicion.temperatura_suelo,
-                        humedad: medicion.humedad,
-                        calidad_aire: medicion.calidad_aire,
-                        presion: medicion.presion,
-                        fecha_hora: medicion.fecha_hora */
-                    });
-                });
-
-
-
-
+                medicion: medicion,
+            /*  estacion_meteorologica: medicion.estacion_meteorologica.name,
+                location: medicion.estacion_meteorologica.location,
+                user_register: medicion.estacion_meteorologica.user_register,
+                user_mant: medicion.estacion_meteorologica.user_mant,
+                lluvia: medicion.lluvia,
+                velocidad_viento: medicion.velocidad_viento,
+                direccion_viento: medicion.direccion_viento,
+                temperatura_ambiente: medicion.temperatura_ambiente,
+                temperatura_suelo: medicion.temperatura_suelo,
+                humedad: medicion.humedad,
+                calidad_aire: medicion.calidad_aire,
+                presion: medicion.presion,
+                fecha_hora: medicion.fecha_hora */
+            });
+        });
+    },
+    getMedicionesEntreFechas: (req, res) => {
+        Medicion.find({fecha_hora: {$gte: req.body.start_date, $lte: req.body.end_date}})
+        .sort({fecha_hora: 1})
+        .populate('estacion_meteorologica', 'name')
+        .exec(function (err, medicion) {
+            if (err) res.send(500, err.message);
+            res.status(200).json({
+                medicion: medicion
+            });
+        });
     }
 
 }
