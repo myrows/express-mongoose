@@ -6,43 +6,47 @@ const Estacion = require('../models/estacion_meteorologica');
 const Medicion = require('../models/medicion');
 const _ = require('lodash');
 var moment = require('moment');
+const USER_LEVEL = 0;
+const MANAGER_LEVEL = 1;
+const ADMIN_LEVEL = 2;
+
 
 
 module.exports = {
 
     createStation: (req, res) => {
+        if (req.user.rol === 'USER') {
+            res.status(401).json('No tiene acceso a este recurso');
+        } else {
+            let estacion = new Estacion({
+                name: req.body.name,
+                location: req.body.location,
+                user_register: req.body.user_register,
+                user_mant: req.body.user_mant
+            });
 
-        let estacion = new Estacion({
-            name: req.body.name,
-            location: req.body.location,
-            user_register: req.body.user_register,
-            user_mant: req.body.user_mant
-        });
-
-        estacion.save()
-            .then(e => e.populate('user_register').execPopulate())
-            .then(e => e.populate('user_mant').execPopulate())
-            .then(e => res.status(201).json(e))
-            .catch(error => res.send(500).json(error.message));
-
+            estacion.save()
+                .then(e => e.populate('user_register').execPopulate())
+                .then(e => e.populate('user_mant').execPopulate())
+                .then(e => res.status(201).json(e))
+                .catch(error => res.send(500).json(error.message));
+        }
     },
-    getAll: async(req, res) => {      
+    getAll: async(req, res) => {
 
-            let result = null;
+        let result = null;
 
-            if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
-                result = await Estacion.find().populate('user', 'user_register', 'user_mant').exec();
+        if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
+            result = await Estacion.find().populate('user', 'user_register', 'user_mant').exec();
 
-            res.status(200).json(result);
-        
-            res.send(500, error.message);
-        
+        res.status(200).json(result);
+
+        res.send(500, error.message);
+
     },
     getById: async(req, res) => {
 
         let result = null;
-
-
         //if (_.indexOf(req.user.rol, 'MANAGER') >= 0){          
 
         const _id = req.params._id;
@@ -54,15 +58,15 @@ module.exports = {
                 res.status(200).json({
 
                     estacion: estacion
-                  
+
                 });
 
 
 
             });
-      /*   } else {
-            next(new error_types.Error401('No estás autorizado con el rol de MANAGER'));
-        } */
+        /*   } else {
+              next(new error_types.Error401('No estás autorizado con el rol de MANAGER'));
+          } */
 
 
 
@@ -87,7 +91,7 @@ module.exports = {
 
     },
     delStation: (req, res) => {
-        Estacion.findByIdAndDelete(req.params.id)
+        Estacion.findByIdAndDelete(req.params._id)
             .then(e => res.status(204))
             .catch(error => res.send(500).json(error.message));
 

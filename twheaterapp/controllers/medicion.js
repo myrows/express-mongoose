@@ -1,12 +1,13 @@
 'use strict'
 
 const error_types = require('./error_types');
-
 const Medicion = require('../models/medicion');
 const _ = require('lodash');
 var moment = require('moment');
 
-
+const USER_LEVEL = 0;
+const MANAGER_LEVEL = 1;
+const ADMIN_LEVEL = 2;
 
 module.exports = {
 
@@ -35,21 +36,29 @@ module.exports = {
     },
     getAllWeatherToday: (req, res) => {
 
-            const start = moment().startOf('day').format();
-            const end = moment().endOf('day').format();
+        const start = moment().startOf('day').format();
+        const end = moment().endOf('day').format();
 
-                Medicion.find({fecha_hora: {$gte: start, $lte: end}})
-                .sort({fecha_hora: 1})
-                .populate('estacion_meteorologica')
-                .exec(function (err, medicion) {
-                    if (err) res.send(500, err.message);
-                    res.status(200).json({
-                        medicion: medicion
-                    });
-                });
-
-
-
+        Medicion.find({fecha_hora: {$gte: start, $lte: end}})
+        .sort({fecha_hora: 1})
+        .populate('estacion_meteorologica')
+        .exec(function (err, medicion) {
+            if (err) res.send(500, err.message);
+            res.status(200).json({
+                medicion: medicion
+            });
+        });
+    },
+    getMedicionesEntreFechas: (req, res) => {
+        Medicion.find({fecha_hora: {$gte: req.body.from, $lte: req.body.to}})
+        .sort({fecha_hora: 1})
+        .populate('estacion_meteorologica')
+        .exec(function (err, medicion) {
+            if (err) res.send(500, err.message);
+            res.status(200).json({
+                medicion: medicion
+            });
+        });
 
     },
     getById: async(req, res) => {
@@ -65,8 +74,6 @@ module.exports = {
                     medicion: medicion
 
                 });
-
-
 
             });
         /*} else {

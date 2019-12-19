@@ -5,14 +5,36 @@ const error_types = require('../controllers/error_types');
 
 let middlewares = {
 
-    ensureAuthenticated: (req, res, next) => {
+    isAuthoriceFor: (req, res, next) => {
+
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
+
             if (info) { return next(new error_types.Error401(info.message)); }
+
+            if (err) { return next(err); }
+
+            if (!user) { return next(new error_types.Error403("You are not allowed to access.")); }
+
+
+
+            /* if (info) { return next(new error_types.Error401(info.message)); }
 
             if (err) { return next(err); }
 
             if (!user) { return next(new error_types.Error403("El acceso no esta permitido")); }
 
+            if (role != null) {
+
+                if (role === 'USER' && req.levelAuth > 0) {
+                    return next(new error_types.Error403("Acceso no permitido"));
+                }
+
+                if (role === 'MANAGER' && req.levelAuth > 1) {
+                    return next(new error_types.Error403("Acceso no permitido"));
+                }
+
+
+            } */
             req.user = user;
             next();
         })(req, res, next);
@@ -37,36 +59,12 @@ let middlewares = {
 
     notFoundHandler: (req, res, next) => {
         res.status(404).json({ error: "Endpoint no encontrado" });
-    },
-
-    isAuthoriceFor: (role, levelAuth, req, res, next) => {
-
-        passport.authenticate('jwt', { session: false }, (err, user, info) => {
-            if (info) { return next(new error_types.Error401(info.message)); }
-
-            if (err) { return next(err); }
-
-            if (!user) { return next(new error_types.Error403("El acceso no esta permitido")); }
-
-            if (role != null) {
-
-                if (role === 'USER' && levelAuth > 0) {
-                    return next(new error_types.Error403("Acceso no permitido"));
-                }
-
-                if (role === 'MANAGER' && levelAuth > 1) {
-                    return next(new error_types.Error403("Acceso no permitido"));
-                }
-
-
-            }
-
-            req.user = user;
-            next();
-        })
-
     }
+
+
 }
 
 
 module.exports = middlewares;
+
+/*https://www.freecodecamp.org/news/learn-how-to-handle-authentication-with-node-using-passport-js-4a56ed18e81e/ */

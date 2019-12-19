@@ -12,8 +12,6 @@ router.get('/:id', EstacionController.getById);
 router.get('/:id/weather/from/:from/to/:to', EstacionController.getWeatherOfStationByDate)
 router.put('/:id', EstacionController.putStation);
 router.delete('/:id', EstacionController.delStation);
-
-
-
+router.get(':id/weather/', EstacionController.getWeatherOfStation);
 
 module.exports = router
