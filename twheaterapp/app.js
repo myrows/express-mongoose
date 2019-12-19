@@ -31,7 +31,6 @@ db.once('open', () => {
 
 passport.use(new LocalStrategy((username, password, done) => {
     let busqueda = (username.includes('@')) ? { email: username } : { username: username };
-    console.log(busqueda);
 
     User.findOne(busqueda, (err, user) => {
         if (err) return done(null, false);
@@ -65,7 +64,6 @@ app.use(passport.initialize())
 app.use('/api/', user_routes);
 app.use('/api/stations/', estacion_routes);
 app.use('/api/weather/', medicion_routes);
-//app.use(middleware.isAuthoriceFor);
 app.use(middleware.errorHandler);
 app.use(middleware.notFoundHandler);
 

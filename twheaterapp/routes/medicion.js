@@ -6,10 +6,12 @@ const router = express.Router()
 const middleware = require('../middleware/index');
 const MedicionController = require('../controllers/medicion')
 
-router.post('/', MedicionController.nuevaMedicion);
-router.get('/today', MedicionController.getAllWeatherToday);
-router.get('/from/:from/to/:to',MedicionController.getMedicionesEntreFechas);
-router.get('/:id', MedicionController.getById);
+router.post('/', middleware.ensureAuthenticatedAndManager, MedicionController.nuevaMedicion);
+router.get('/today', middleware.ensureAuthenticatedAndAdmin, MedicionController.getAllWeatherToday);
+router.get('/fromto', MedicionController.getMedicionesEntreFechas);
+router.get('/from/:from/to/:to', middleware.ensureAuthenticated, MedicionController.getMedicionesEntreFechas);
+
+router.get('/:id', middleware.ensureAuthenticated, MedicionController.getById);
 
 
 module.exports = router
