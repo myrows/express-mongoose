@@ -74,7 +74,8 @@ module.exports = {
     putStation: (req, res) => {
 /*             if ((req.user.rol, 'MANAGER')) */
             const _id = req.params.id;
-            Estacion.replaceOne({_id},{name: req.body.name, location: req.body.location})
+            Estacion.updateOne({_id},{name: req.body.name, location: req.body.location,
+            user_register: req.body.user_register, user_mant: req.body.user_mant})
             .populate({path: 'user_register', select: ['username', 'email']})
             .populate({path: 'user_mant', select: ['username', 'email']})
             .exec(function(err, estacion){
