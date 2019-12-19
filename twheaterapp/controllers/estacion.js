@@ -5,6 +5,7 @@ const error_types = require('./error_types');
 const Estacion = require('../models/estacion_meteorologica');
 const Medicion = require('../models/medicion');
 const _ = require('lodash');
+var moment = require('moment');
 
 
 module.exports = {
@@ -107,6 +108,21 @@ module.exports = {
                 })
             });
 
+    },
+    getWeatherOfStationByDate: (req, res) => {
+        const _id = req.params.id;
+        const from = req.params.from;
+        const to = req.params.to;
+        const start = moment(from).format();
+        const end = moment(to).format();
+        Medicion.find({estacion_meteorologica: _id, fecha_hora: {$gte: start, $lte: end}})
+        .populate('estacion_meteorologica')
+        .exec(function(err, medicion){
+            if(err) res.send(500, err.message);
+            res.status(200).json({
+                medicion: medicion
+            })
+        }) 
     }
 
 }

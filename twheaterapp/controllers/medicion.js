@@ -54,9 +54,6 @@ module.exports = {
     },
     getById: async(req, res) => {
 
-        let result = null;
-
-
         //if (_.indexOf(req.user.rol, 'MANAGER') >= 0){          
 
         const _id = req.params._id;
@@ -75,9 +72,6 @@ module.exports = {
         /*} else {
             next(new error_types.Error401('No estás autorizado con el rol de MANAGER'));
         }*/
-
-
-
     }
 
 }
