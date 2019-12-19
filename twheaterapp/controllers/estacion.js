@@ -71,20 +71,7 @@ module.exports = {
 
 
     },
-/*     putStation: (req, res) => {
-        const _id = req.params.id;
-        console.log(_id)
-        if ((req.user.rol, 'MANAGER')){
-        Estacion.find(_id, { $addToSet: { name: req.body.name, location: req.body.location }}, { new: true }, (error, estacion) => {
-            if (error) next(new error_types.Error500(error.message));
-            if (estacion == null)
-                next(new error_types.Error404('No se ha encontrado ninguna estación con ese id'))
-            else
-                res.status(200).json({
-                    estacion: estacion
-                });
-        }); */
-        putStation: (req, res) => {
+    putStation: (req, res) => {
 /*             if ((req.user.rol, 'MANAGER')) */
             const _id = req.params.id;
             Estacion.replaceOne({_id},{name: req.body.name, location: req.body.location})
