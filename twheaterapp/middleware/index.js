@@ -3,43 +3,45 @@
 const passport = require('passport');
 const error_types = require('../controllers/error_types');
 
+
+function ensureAuthenticatedWithRole(role, req, res, next) {
+    passport.authenticate('jwt', { session: false }, (err, user, info) => {
+        if (info) { return next(new error_types.Error401(info.message)); }
+
+        if (err) { return next(err); }
+
+        if (!user) { return next(new error_types.Error403("You are not allowed to access.")); }
+
+
+        if (role == "MANAGER") {
+
+            if (user.rol == "USER") {
+                return next(new error_types.Error403("El usuario no posee el rol necesario."));
+            }
+        }
+        if (role == "ADMIN") {
+            if (user.rol == "USER" || user.rol == "MANAGER") {
+                return next(new error_types.Error403("El usuario no posee el rol necesario."));
+            }
+        }
+        req.user = user;
+        next();
+    })(req, res, next);
+
+
+}
+
 let middlewares = {
 
-    isAuthoriceFor: (req, res, next) => {
-
-        passport.authenticate('jwt', { session: false }, (err, user, info) => {
-
-            if (info) { return next(new error_types.Error401(info.message)); }
-
-            if (err) { return next(err); }
-
-            if (!user) { return next(new error_types.Error403("You are not allowed to access.")); }
-
-
-
-            /* if (info) { return next(new error_types.Error401(info.message)); }
-
-            if (err) { return next(err); }
-
-            if (!user) { return next(new error_types.Error403("El acceso no esta permitido")); }
-
-            if (role != null) {
-
-                if (role === 'USER' && req.levelAuth > 0) {
-                    return next(new error_types.Error403("Acceso no permitido"));
-                }
-
-                if (role === 'MANAGER' && req.levelAuth > 1) {
-                    return next(new error_types.Error403("Acceso no permitido"));
-                }
-
-
-            } */
-            req.user = user;
-            next();
-        })(req, res, next);
+    ensureAuthenticated: (req, res, next) => {
+        ensureAuthenticatedWithRole(null, req, res, next);
     },
-
+    ensureAuthenticatedAndManager: (req, res, next) => {
+        ensureAuthenticatedWithRole("MANAGER", req, res, next);
+    },
+    ensureAuthenticatedAndAdmin: (req, res, next) => {
+        ensureAuthenticatedWithRole("ADMIN", req, res, next);
+    },
     errorHandler: (error, req, res, next) => {
         if (error instanceof error_types.InfoError)
             res.status(200).json({ error: error.message });

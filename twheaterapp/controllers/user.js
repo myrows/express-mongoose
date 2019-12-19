@@ -45,7 +45,6 @@ let controller = {
         })
     },
     login: (req, res, next) => {
-        let auth_level = USER_LEVEL
         passport.authenticate("local", { session: false }, (error, user) => {
             if (error || !user) {
                 next(new error_types.Error404("El nombre de usuario/email o la contraseña no son correctos."))
@@ -53,18 +52,21 @@ let controller = {
                 const payload = {
                     sub: user._id,
                     exp: Date.now() + parseInt(process.env.JWT_LIFETIME),
-                    username: user.username
+                    username: user.username,
+
                 };
+
                 const token = jwt.sign(JSON.stringify(payload), process.env.JWT_SECRET, { algorithm: process.env.JWT_ALGORITHM });
                 res.json({
                     username: user.username,
                     token: token
-                });
+                })
+
             }
         })(req, res)
     },
     getUsuarios: async(req, res) => {
-        let auth_level = ADMIN_LEVEL;
+
         try {
 
             let result = null;
