@@ -16,9 +16,9 @@ const ADMIN_LEVEL = 2;
 module.exports = {
 
     createStation: (req, res) => {
-        if (req.user.rol === 'USER') {
-            res.status(401).json('No tiene acceso a este recurso');
-        } else {
+    
+           
+        
             let estacion = new Estacion({
                 name: req.body.name,
                 location: req.body.location,
@@ -76,13 +76,13 @@ module.exports = {
 
     },
     putStation: (req, res) => {
-        /*             if ((req.user.rol, 'MANAGER')) */
-        const _id = req.params.id;
-        Estacion.replaceOne({ _id }, { name: req.body.name, location: req.body.location })
-            .populate({ path: 'user_register', select: ['username', 'email'] })
-            .populate({ path: 'user_mant', select: ['username', 'email'] })
-            .exec(function(err, estacion) {
-                if (err) res.send(500, err.message);
+            const _id = req.params.id;
+            Estacion.updateOne({_id},{name: req.body.name, location: req.body.location,
+            user_register: req.body.user_register, user_mant: req.body.user_mant})
+            .populate({path: 'user_register', select: ['username', 'email']})
+            .populate({path: 'user_mant', select: ['username', 'email']})
+            .exec(function(err, estacion){
+                if(err) res.send(500, err.message);
                 res.status(201).json({
                     estacion: estacion
                 })
@@ -114,23 +114,33 @@ module.exports = {
 
     },
 
-    getSummaryOfToday: (req, res) => {
+    getSummaryOfToday:(req, res) => {
 
-        const start = moment().startOf('day').format();
-        const end = moment().endOf('day').format();
+            const start = moment().startOf('day').format();
+            const end = moment().endOf('day').format();
+            const id = req.params.id;
+            console.log(id)
+           
 
-        Medicion.aggregate([
-            { $match: { fecha_hora: { $gte: start, $lte: end } } },
-            { $group: { _id: req.params.id, temp_max: { $max: "$temperatura_ambiente" }, temp_min: { $min: "$temperatura_ambiente" }, media: { $avg: "$temperatura_ambiente" } } },
-            { $sort: { fecha_hora: 1 } }
-        ]).exec(function(err, medicion) {
-            if (err) {
-                return handleError(err);
-            } else {
-                res.status(200).json({ medicion: medicion });
-            }
-        })
-    },
+            Medicion.aggregate([
+                   {"$match" :
+                   {"estacion_meteorologica":{ "$in": mongoose.Types.ObjectId(id) }}
+                }
+
+
+                //{$group: {_id: "$estacion_meteorolgica"}}
+                //{ $match: { estacion_meteorologica: id}},
+                //{ "$group": { temp_max: { $max: "$temperatura_ambiente" }, temp_min: { $min: "$temperatura_ambiente"}, media: {$avg: "$temperatura_ambiente"} } },
+                
+             ]).exec(function (err, medicion) {
+                if (err){
+                   res.status(500).send(err);
+                } else{
+                    res.status(200).json({
+                        medicion: medicion});
+                }
+              })
+            },
     getWeatherOfStationByDate: (req, res) => {
         const _id = req.params.id;
         const from = req.params.from;
