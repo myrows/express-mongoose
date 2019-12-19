@@ -72,7 +72,6 @@ module.exports = {
 
     },
     putStation: (req, res) => {
-/*             if ((req.user.rol, 'MANAGER')) */
             const _id = req.params.id;
             Estacion.updateOne({_id},{name: req.body.name, location: req.body.location,
             user_register: req.body.user_register, user_mant: req.body.user_mant})

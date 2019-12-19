@@ -31,7 +31,6 @@ db.once('open', () => {
 
 passport.use(new LocalStrategy((username, password, done) => {
     let busqueda = (username.includes('@')) ? { email: username } : { username: username };
-    console.log(busqueda);
 
     User.findOne(busqueda, (err, user) => {
         if (err) return done(null, false);
