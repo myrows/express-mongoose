@@ -78,6 +78,12 @@ module.exports = {
 
 
 
+    },
+    delMedicion: (req, res) => {
+        Medicion.findByIdAndDelete(req.params._id)
+            .then(e => res.status(204))
+            .catch(error => res.send(500).json(error.message));
+
     }
 
 }
