@@ -114,16 +114,26 @@ module.exports = {
 
             const start = moment().startOf('day').format();
             const end = moment().endOf('day').format();
+            const id = req.params.id;
+            console.log(id)
+           
 
             Medicion.aggregate([
-                { $match: { fecha_hora: {$gte: start, $lte: end} }},
-                { $project: { estacion_meteorologica:"$req.params.id" , temp_max: { $max: "$temperatura_ambiente" }, temp_min: { $min: "$temperatura_ambiente"}, media: {$avg: "$temperatura_ambiente"} } },
-                { $sort: { fecha_hora: 1 } }
+                   {"$match" :
+                   {"estacion_meteorologica":{ "$in": mongoose.Types.ObjectId(id) }}
+                }
+
+
+                //{$group: {_id: "$estacion_meteorolgica"}}
+                //{ $match: { estacion_meteorologica: id}},
+                //{ "$group": { temp_max: { $max: "$temperatura_ambiente" }, temp_min: { $min: "$temperatura_ambiente"}, media: {$avg: "$temperatura_ambiente"} } },
+                
              ]).exec(function (err, medicion) {
                 if (err){
                    res.status(500).send(err);
                 } else{
-                    res.status(200).json({medicion:medicion});
+                    res.status(200).json({
+                        medicion: medicion});
                 }
               })
             },
