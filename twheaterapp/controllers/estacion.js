@@ -39,7 +39,9 @@ module.exports = {
     getAll: async(req, res) => {
 
         let result = null;
-        result = await Estacion.find().populate('user_register').exec();
+        result = await Estacion.find().populate({ path: 'user_register', select: ['fullname', 'email'] })
+        .populate({ path: 'user_mant', select: ['fullname', 'email'] })
+        .exec();
         res.status(200).json(result);
         if(result == null){
             res.send(500, error.message);
