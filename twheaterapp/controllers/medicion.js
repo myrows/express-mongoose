@@ -65,6 +65,33 @@ module.exports = {
 
 
 
+    },
+    getById: async(req, res) => {
+
+        let result = null;
+
+
+        //if (_.indexOf(req.user.rol, 'MANAGER') >= 0){          
+
+        const _id = req.params._id;
+        Medicion.findById(_id)
+            .populate('estacion_meteorologica')
+            .exec(function(err, medicion) {
+                if (err) res.send(500, err.message);
+                res.status(200).json({
+                    medicion: medicion
+
+                });
+
+
+
+            });
+        /*} else {
+            next(new error_types.Error401('No estás autorizado con el rol de MANAGER'));
+        }*/
+
+
+
     }
 
 }
