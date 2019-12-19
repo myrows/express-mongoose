@@ -15,9 +15,9 @@ const ADMIN_LEVEL = 2;
 module.exports = {
 
     createStation: (req, res) => {
-        if (req.user.rol === 'USER') {
-            res.status(401).json('No tiene acceso a este recurso');
-        } else {
+    
+           
+        
             let estacion = new Estacion({
                 name: req.body.name,
                 location: req.body.location,
@@ -30,7 +30,7 @@ module.exports = {
                 .then(e => e.populate('user_mant').execPopulate())
                 .then(e => res.status(201).json(e))
                 .catch(error => res.send(500).json(error.message));
-        }
+        
     },
     getAll: async(req, res) => {
 
@@ -121,11 +121,11 @@ module.exports = {
 
             Medicion.aggregate([
                 { $match: { fecha_hora: {$gte: start, $lte: end} }},
-                { $group: { _id:req.params.id , temp_max: { $max: "$temperatura_ambiente" }, temp_min: { $min: "$temperatura_ambiente"}, media: {$avg: "$temperatura_ambiente"} } },
+                { $project: { estacion_meteorologica:"$req.params.id" , temp_max: { $max: "$temperatura_ambiente" }, temp_min: { $min: "$temperatura_ambiente"}, media: {$avg: "$temperatura_ambiente"} } },
                 { $sort: { fecha_hora: 1 } }
              ]).exec(function (err, medicion) {
                 if (err){
-                  return handleError(err);
+                   res.status(500).send(err);
                 } else{
                     res.status(200).json({medicion:medicion});
                 }
