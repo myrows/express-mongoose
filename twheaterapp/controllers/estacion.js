@@ -27,8 +27,8 @@ module.exports = {
             });
 
             estacion.save()
-                .then(e => e.populate('user_register').execPopulate())
-                .then(e => e.populate('user_mant').execPopulate())
+                .then(e => e.populate({ path: 'user_register', select: ['fullname', 'email'] }).execPopulate())
+                .then(e => e.populate({ path: 'user_mant', select: ['fullname', 'email'] }).execPopulate())
                 .then(e => res.status(201).json(e))
                 .catch(error => res.send(500).json(error.message));
             
@@ -39,7 +39,8 @@ module.exports = {
     getAll: async(req, res) => {
 
         let result = null;
-        result = await Estacion.find().populate({ path: 'user_register', select: ['fullname', 'email'] })
+        result = await Estacion.find()
+        .populate({ path: 'user_register', select: ['fullname', 'email'] })
         .populate({ path: 'user_mant', select: ['fullname', 'email'] })
         .exec();
         res.status(200).json(result);
@@ -67,8 +68,7 @@ module.exports = {
             putStation: (req, res) => {
                 const _id = req.params.id;
                 Estacion.updateOne({ _id }, {
-                    name: req.body.name, location: req.body.location,
-                    user_register: req.body.user_register, user_mant: req.body.user_mant
+                    name: req.body.name, location: req.body.location
                 })
                     .populate({ path: 'user_register', select: ['username', 'email'] })
                     .populate({ path: 'user_mant', select: ['username', 'email'] })

@@ -7,7 +7,7 @@ const middleware = require('../middleware/index');
 const MedicionController = require('../controllers/medicion')
 
 router.post('/', middleware.ensureAuthenticatedAndManager, MedicionController.nuevaMedicion);
-router.get('/today', middleware.ensureAuthenticatedAndAdmin, MedicionController.getAllWeatherToday);
+router.get('/today', middleware.ensureAuthenticated, MedicionController.getAllWeatherToday);
 router.get('/fromto', MedicionController.getMedicionesEntreFechas);
 router.get('/from/:from/to/:to', middleware.ensureAuthenticated, MedicionController.getMedicionesEntreFechas);
 
