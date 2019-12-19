@@ -5,6 +5,10 @@ const error_types = require('./error_types');
 const Estacion = require('../models/estacion_meteorologica');
 const Medicion = require('../models/medicion');
 const _ = require('lodash');
+const USER_LEVEL = 0;
+const MANAGER_LEVEL = 1;
+const ADMIN_LEVEL = 2;
+
 
 
 module.exports = {
@@ -25,17 +29,17 @@ module.exports = {
             .catch(error => res.send(500).json(error.message));
 
     },
-    getAll: async(req, res) => {      
+    getAll: async(req, res) => {
 
-            let result = null;
+        let result = null;
 
-            if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
-                result = await Estacion.find().populate('user', 'user_register', 'user_mant').exec();
+        if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
+            result = await Estacion.find().populate('user', 'user_register', 'user_mant').exec();
 
-            res.status(200).json(result);
-        
-            res.send(500, error.message);
-        
+        res.status(200).json(result);
+
+        res.send(500, error.message);
+
     },
     getById: async(req, res) => {
 
@@ -53,15 +57,15 @@ module.exports = {
                 res.status(200).json({
 
                     estacion: estacion
-                  
+
                 });
 
 
 
             });
-      /*   } else {
-            next(new error_types.Error401('No estás autorizado con el rol de MANAGER'));
-        } */
+        /*   } else {
+              next(new error_types.Error401('No estás autorizado con el rol de MANAGER'));
+          } */
 
 
 
