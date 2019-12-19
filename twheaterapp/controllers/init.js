@@ -31,7 +31,7 @@ module.exports = {
             "calidad_aire": 76,
             "presion": 30,
             "estacion_meteorologica": "66955ca46063c5600627f392" ,
-            "fecha_hora": Date.now()
+            "fecha_hora": new Date()
         },
         {
             "_id": new ObjectId("76955ca46063c5600627f393"),
@@ -44,7 +44,7 @@ module.exports = {
             "calidad_aire": 76,
             "presion": 30,
             "estacion_meteorologica": "66955ca46063c5600627f393" ,
-            "fecha_hora": Date.now()
+            "fecha_hora": new Date()
         },
         {
             "_id": new ObjectId("76955ca46063c5600627f394"),
@@ -57,7 +57,7 @@ module.exports = {
             "calidad_aire": 76,
             "presion": 30,
             "estacion_meteorologica": "66955ca46063c5600627f394" ,
-            "fecha_hora": Date.now()
+            "fecha_hora": new Date()
         }
         ]
 
