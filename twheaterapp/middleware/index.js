@@ -8,7 +8,16 @@ let middlewares = {
     isAuthoriceFor: (req, res, next) => {
 
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
+
             if (info) { return next(new error_types.Error401(info.message)); }
+
+            if (err) { return next(err); }
+
+            if (!user) { return next(new error_types.Error403("You are not allowed to access.")); }
+
+
+
+            /* if (info) { return next(new error_types.Error401(info.message)); }
 
             if (err) { return next(err); }
 
@@ -25,11 +34,10 @@ let middlewares = {
                 }
 
 
-            }
+            } */
             req.user = user;
             next();
-        });
-
+        })(req, res, next);
     },
 
     errorHandler: (error, req, res, next) => {
@@ -58,3 +66,5 @@ let middlewares = {
 
 
 module.exports = middlewares;
+
+/*https://www.freecodecamp.org/news/learn-how-to-handle-authentication-with-node-using-passport-js-4a56ed18e81e/ */

@@ -14,20 +14,22 @@ const ADMIN_LEVEL = 2;
 module.exports = {
 
     createStation: (req, res) => {
+        if (req.user.rol === 'USER') {
+            res.status(401).json('No tiene acceso a este recurso');
+        } else {
+            let estacion = new Estacion({
+                name: req.body.name,
+                location: req.body.location,
+                user_register: req.body.user_register,
+                user_mant: req.body.user_mant
+            });
 
-        let estacion = new Estacion({
-            name: req.body.name,
-            location: req.body.location,
-            user_register: req.body.user_register,
-            user_mant: req.body.user_mant
-        });
-
-        estacion.save()
-            .then(e => e.populate('user_register').execPopulate())
-            .then(e => e.populate('user_mant').execPopulate())
-            .then(e => res.status(201).json(e))
-            .catch(error => res.send(500).json(error.message));
-
+            estacion.save()
+                .then(e => e.populate('user_register').execPopulate())
+                .then(e => e.populate('user_mant').execPopulate())
+                .then(e => res.status(201).json(e))
+                .catch(error => res.send(500).json(error.message));
+        }
     },
     getAll: async(req, res) => {
 
