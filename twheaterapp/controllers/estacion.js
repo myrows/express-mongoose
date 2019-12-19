@@ -33,7 +33,8 @@ module.exports = {
                 .catch(error => res.send(500).json(error.message));
             
             req.user.estacion_register.push(estacion._id);
-            
+            req.user.save();
+
         },
     getAll: async(req, res) => {
 
@@ -61,8 +62,6 @@ module.exports = {
                     res.status(200).json({
                         estacion: estacion
                     });
-
-
 
                 });
            },
