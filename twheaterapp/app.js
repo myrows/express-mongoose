@@ -12,6 +12,7 @@ const bcrypt = require('bcryptjs');
 const user_routes = require('./routes/users');
 const estacion_routes = require('./routes/estacion');
 const medicion_routes = require('./routes/medicion')
+const init_routes = require('./routes/init')
 const middleware = require('./middleware/index');
 const User = require('./models/user');
 require('dotenv').config();
@@ -65,6 +66,7 @@ app.use(passport.initialize())
 app.use('/api/', user_routes);
 app.use('/api/stations/', estacion_routes);
 app.use('/api/weather/', medicion_routes);
+app.use('/api/init/', init_routes);
 app.use(middleware.errorHandler);
 app.use(middleware.notFoundHandler);
 
