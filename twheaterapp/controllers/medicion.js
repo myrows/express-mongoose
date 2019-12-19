@@ -54,7 +54,14 @@ module.exports = {
         const to = moment(req.params.to).format();
         Medicion.find({fecha_hora: {$gte: from, $lte: to}})
         .sort({fecha_hora: 1})
-        .populate('estacion_meteorologica')
+        .populate({
+            path:'estacion_meteorologica',
+            populate: {path:'user_register', select: ['fullname','email']}
+        })
+        .populate({
+            path:'estacion_meteorologica',
+            populate: {path:'user_mant', select: ['fullname','email']}
+        })
         .exec(function (err, medicion) {
             if (err) res.send(500, err.message);
             res.status(200).json({
