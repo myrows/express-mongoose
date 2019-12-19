@@ -50,7 +50,9 @@ module.exports = {
         });
     },
     getMedicionesEntreFechas: (req, res) => {
-        Medicion.find({fecha_hora: {$gte: req.body.from, $lte: req.body.to}})
+        const from = moment(req.params.from).format();
+        const to = moment(req.params.to).format();
+        Medicion.find({fecha_hora: {$gte: from, $lte: to}})
         .sort({fecha_hora: 1})
         .populate('estacion_meteorologica')
         .exec(function (err, medicion) {
