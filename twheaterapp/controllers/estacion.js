@@ -39,14 +39,11 @@ module.exports = {
     getAll: async(req, res) => {
 
         let result = null;
-
-        if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
-            result = await Estacion.find().populate('user', 'user_register', 'user_mant').exec();
-
+        result = await Estacion.find().populate('user_register').exec();
         res.status(200).json(result);
-
-        res.send(500, error.message);
-
+        if(result == null){
+            res.send(500, error.message);
+        }
     },
         getById: async (req, res) => {
 
