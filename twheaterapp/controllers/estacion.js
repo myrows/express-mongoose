@@ -5,6 +5,10 @@ const error_types = require('./error_types');
 const Estacion = require('../models/estacion_meteorologica');
 const Medicion = require('../models/medicion');
 const _ = require('lodash');
+var moment = require('moment');
+const USER_LEVEL = 0;
+const MANAGER_LEVEL = 1;
+const ADMIN_LEVEL = 2;
 
 
 
@@ -108,6 +112,39 @@ module.exports = {
                 })
             });
 
+    },
+
+    getSummaryOfToday: (req, res) => {
+
+        const start = moment().startOf('day').format();
+        const end = moment().endOf('day').format();
+
+        Medicion.aggregate([
+            { $match: { fecha_hora: { $gte: start, $lte: end } } },
+            { $group: { _id: req.params.id, temp_max: { $max: "$temperatura_ambiente" }, temp_min: { $min: "$temperatura_ambiente" }, media: { $avg: "$temperatura_ambiente" } } },
+            { $sort: { fecha_hora: 1 } }
+        ]).exec(function(err, medicion) {
+            if (err) {
+                return handleError(err);
+            } else {
+                res.status(200).json({ medicion: medicion });
+            }
+        })
+    },
+    getWeatherOfStationByDate: (req, res) => {
+        const _id = req.params.id;
+        const from = req.params.from;
+        const to = req.params.to;
+        const start = moment(from).format();
+        const end = moment(to).format();
+        Medicion.find({ estacion_meteorologica: _id, fecha_hora: { $gte: start, $lte: end } })
+            .populate('estacion_meteorologica')
+            .exec(function(err, medicion) {
+                if (err) res.send(500, err.message);
+                res.status(200).json({
+                    medicion: medicion
+                })
+            })
     }
 
 }
