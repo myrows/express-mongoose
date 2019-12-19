@@ -34,8 +34,7 @@ module.exports = {
             
             req.user.estacion_register.push(estacion._id);
             
-        }
-    },
+        },
     getAll: async(req, res) => {
 
         let result = null;

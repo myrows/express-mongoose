@@ -1,13 +1,16 @@
-# examen-psp-express-2019
+# TWEATHERAPP
+Proyecto desarrollado en Express con Mongoose
 
-Código base para el examen de Node.js y Express.js de Diciembre de 2019
+Tecnologías usadas : Node.js, Express, Mongoose, Passport
 
-El enunciado del examen está disponible en el aula virtual.
+Desarrolladores de la Api Rest : Pablo Roldán, José Antonio Llamas, José Manuel Bargueño y Daniel Troncoso
+
+# ¿Qué es TWEATHERAPP?
+
+- Se trata de un api para la gestión de estaciones meteorológicas.
 
 No olvides instalar los paquetes necesarios antes de realizar la primera ejecución
 
 ```bash
 npm install
 ```
-
-Este código se basa en el ejemplo realizado por David Poza en [https://github.com/davidpoza/passport-jwt-example](https://github.com/davidpoza/passport-jwt-example)
