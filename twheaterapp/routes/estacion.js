@@ -1,4 +1,4 @@
-'use strict'
+/* 'use strict'
 
 const express = require('express')
 const router = express.Router()
@@ -15,4 +15,4 @@ router.delete('/:id', middleware.ensureAuthenticatedAndManager, EstacionControll
 router.get('/:id/today', middleware.ensureAuthenticated, EstacionController.getSummaryOfToday);
 router.get(':id/weather/', middleware.ensureAuthenticated, EstacionController.getWeatherOfStation);
 
-module.exports = router
+module.exports = router */

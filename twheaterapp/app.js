@@ -63,7 +63,7 @@ app.use(cookieParser())
 app.use(passport.initialize())
 
 app.use('/api/', user_routes);
-app.use('/api/stations/', estacion_routes);
+/* app.use('/api/stations/', estacion_routes); */
 app.use('/api/weather/', medicion_routes);
 app.use('/api/init/', init_routes);
 app.use(middleware.errorHandler);
