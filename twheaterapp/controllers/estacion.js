@@ -34,7 +34,7 @@ module.exports = {
             
             req.user.estacion_register.push(estacion._id);
             req.user.save();
-
+            
         },
     getAll: async(req, res) => {
 
