@@ -100,9 +100,10 @@ module.exports = {
 
     },
     delMedicion: (req, res) => {
-        Medicion.findByIdAndDelete(req.params._id)
-            .then(e => res.status(204))
-            .catch(error => res.send(500).json(error.message));
+        Medicion.findByIdAndDelete(req.params.id, (error, medicion) => {
+            if (error) { res.send(500, err.message) };
+            res.status(204).json(medicion)
+        })
 
     }
 

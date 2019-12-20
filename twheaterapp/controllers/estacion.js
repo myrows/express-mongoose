@@ -83,10 +83,13 @@
      delStation: (req, res) => {
 
 
-         Estacion.findByIdAndDelete(req.params.id)
-             .exec()
+         Estacion.findByIdAndDelete(req.params.id, (error, estacion) => {
+                 if (error) { res.send(500, err.message) };
+                 res.status(204).json(estacion)
+             })
+             /* .exec()
              .then(res.status(204))
-             .catch(res.status(500));
+             .catch(res.status(500)); */
 
      },
 
