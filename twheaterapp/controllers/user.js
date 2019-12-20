@@ -67,17 +67,17 @@ let controller = {
     },
     getUsuarios: async(req, res) => {
 
-        try {
-
+    
             let result = null;
-
-            if (_.indexOf(req.user.rol, 'MANAGER') >= 0)
-                result = await User.find().populate('estacion', 'estacion_register', 'estacion_mant').exec();
+            result = await User.find()
+            .populate('estacion_register')
+            .populate('estacion_mant').exec();
 
             res.status(200).json(result);
-        } catch (error) {
+            if(result==null){
             res.send(500, error.message);
-        }
+            }
+        
     }
 
 
