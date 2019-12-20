@@ -72,6 +72,7 @@ localhost:3000/api/stations/ - POST
 }
 localhost:3000/api/stations/ - GET
 localhost:3000/api/stations/:id - GET
+- localhost:3000/api/stations/66955ca46063c5600627f392  
 localhost:3000/api/stations/:id/today - GET
 localhost:3000/api/stations/:id/weather/ - GET
 localhost:3000/api/stations/:id/weather/from/:from/to/:to - GET
@@ -107,6 +108,7 @@ localhost:3000/api/weather/ - POST
     }
 
 localhost:3000/api/weather/:id - GET
+- localhost:3000/api/weather/76955ca46063c5600627f392
 localhost:3000/api/weather/today - GET
 localhost:3000/api/weather/fromto - GET
 localhost:3000/api/weather/from/:from/to/:to - GET
