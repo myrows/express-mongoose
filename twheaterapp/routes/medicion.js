@@ -10,7 +10,7 @@ router.post('/', middleware.ensureAuthenticatedAndManager, MedicionController.nu
 router.get('/today', middleware.ensureAuthenticated, MedicionController.getAllWeatherToday);
 router.get('/fromto', MedicionController.getMedicionesEntreFechas);
 router.get('/from/:from/to/:to', middleware.ensureAuthenticated, MedicionController.getMedicionesEntreFechas);
-
+router.delete('/:id', middleware.ensureAuthenticatedAndManager, MedicionController.delMedicion);
 router.get('/:id', middleware.ensureAuthenticated, MedicionController.getById);
 
 
