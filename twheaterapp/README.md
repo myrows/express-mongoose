@@ -113,6 +113,6 @@ localhost:3000/api/weather/today - GET
 localhost:3000/api/weather/fromto - GET
 localhost:3000/api/weather/from/:from/to/:to - GET
 - localhost:3000/api/weather/from/2019-11-01/to/2019-12-01
-localhost:3000//api/weather/:id - DELETE
-- localhost:3000//api/weather/76955ca46063c5600627f392 
+localhost:3000/api/weather/:id - DELETE
+- localhost:3000/api/weather/76955ca46063c5600627f392 
 ```
