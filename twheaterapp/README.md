@@ -11,6 +11,12 @@ Desarrolladores de la Api Rest : Pablo Roldán, José Antonio Llamas, José Manu
 
 # EndPoints a tener en cuenta
 
+- Primero insertaremos unos datos de ejemplo :
+
+```bash
+localhost:3000/api/init/
+```
+
 - Users
 
 ```bash
