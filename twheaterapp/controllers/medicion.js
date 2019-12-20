@@ -81,7 +81,7 @@ module.exports = {
 
         //if (_.indexOf(req.user.rol, 'MANAGER') >= 0){          
 
-        const _id = req.params._id;
+        const _id = req.params.id;
         Medicion.findById(_id)
             .populate('estacion_meteorologica')
             .exec(function(err, medicion) {

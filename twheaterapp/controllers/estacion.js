@@ -51,7 +51,7 @@
 
          let result = null;
 
-         const _id = req.params._id;
+         const _id = req.params.id;
          Estacion.findById(_id)
              .populate('user_register')
              .populate('user_mant')
