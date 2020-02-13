@@ -15,6 +15,7 @@ const medicion_routes = require('./routes/medicion')
 const init_routes = require('./routes/init')
 const middleware = require('./middleware/index');
 const User = require('./models/user');
+const morgan = require('morgan');
 require('dotenv').config();
 
 /* ##### MONGO ##### */
@@ -57,6 +58,7 @@ passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
 
 const app = express()
 
+app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
